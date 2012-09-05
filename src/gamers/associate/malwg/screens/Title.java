@@ -4,6 +4,7 @@ import gamers.associate.malwg.Assets;
 import gamers.associate.malwg.Malwg;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Title implements Screen {
+public class Title implements Screen, InputProcessor {
 	private SpriteBatch batch;
 	private Sprite sprite;
 	private BitmapFont font;
@@ -30,10 +31,6 @@ public class Title implements Screen {
 		this.sprite.draw(this.batch);
 		this.font.draw(this.batch, insert, Gdx.graphics.getWidth() / 2f - 100, Gdx.graphics.getHeight() / 3f);
 		this.batch.end();
-		
-		if (Gdx.input.isKeyPressed(Keys.ANY_KEY)) {
-			Malwg.get().playNextGame();
-		}
 	}
 
 	public void resize(int width, int height) {
@@ -42,8 +39,7 @@ public class Title implements Screen {
 	}
 
 	public void show() {
-		// TODO Auto-generated method stub
-		
+		Gdx.input.setInputProcessor(this);		
 	}
 
 	public void hide() {
@@ -64,6 +60,54 @@ public class Title implements Screen {
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		Malwg.get().playNextGame();
+		return true;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int x, int y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int x, int y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int x, int y, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchMoved(int x, int y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

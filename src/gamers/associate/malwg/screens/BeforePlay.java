@@ -36,10 +36,6 @@ public class BeforePlay implements Screen {
 		this.backSprite.draw(this.batch);
 		this.font.draw(this.batch, this.title, Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 3f);
 		this.batch.end();
-		
-		if (Gdx.input.isKeyPressed(Keys.ANY_KEY)) {
-			this.game.startGame();
-		}
 	}
 
 	@Override
