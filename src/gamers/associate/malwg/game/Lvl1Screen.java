@@ -1,66 +1,58 @@
-package gamers.associate.malwg.screens;
+package gamers.associate.malwg.game;
 
 import gamers.associate.malwg.Assets;
-import gamers.associate.malwg.Malwg;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Title implements Screen {
+public class Lvl1Screen implements Screen {
 	private SpriteBatch batch;
-	private Sprite sprite;
 	private BitmapFont font;
-	private static String insert = "INSERT LOVE";
 	
-	public Title() {
+	public Lvl1Screen() {
 		this.batch = new SpriteBatch();
-		this.sprite = Assets.getTitleSprite();
-		this.sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		this.font = Assets.getNewFont();
 	}
 	
+	@Override
 	public void render(float delta) {
 		this.batch.begin();
-		this.sprite.draw(this.batch);
-		this.font.draw(this.batch, insert, Gdx.graphics.getWidth() / 2f - 100, Gdx.graphics.getHeight() / 3f);
+		this.font.draw(this.batch, "yop", 50, 50);
 		this.batch.end();
-		
-		if (Gdx.input.isKeyPressed(Keys.ANY_KEY)) {
-			Malwg.get().playNextGame();
-		}
 	}
 
+	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
 	public void show() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
 		

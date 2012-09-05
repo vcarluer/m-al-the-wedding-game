@@ -1,9 +1,13 @@
 package gamers.associate.malwg;
 
+import gamers.associate.malwg.game.Lvl1;
+import gamers.associate.malwg.screens.BeforePlay;
 import gamers.associate.malwg.screens.Title;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL10;
 
 public class Malwg extends Game {
 
@@ -12,16 +16,54 @@ public class Malwg extends Game {
 	public static final int HEIGHT = 600;
 	
 	private static Malwg game;
+	
+	private MiniGame miniGame; 
 
 	public void create() {
+		Assets.load();
 		this.setScreen(new Title());
 	}
 
-	public static ApplicationListener get() {
+	public static Malwg get() {
 		if (game == null) {
 			game = new Malwg();
 		}
 		
 		return game;
+	}
+
+	@Override
+	public void render() {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		super.render();
+	}
+	
+	public MiniGame getCurrentGame() {
+		return this.miniGame;
+	}
+	
+	public void playGame() {
+		if (this.miniGame != null) {
+			this.miniGame.play();
+		}		
+	}
+	
+	public void setCurrentScreen(Screen screen) {
+		this.setScreen(screen);
+	}
+	
+	public void playNextGame() {
+		this.miniGame = this.getNextGame();
+		this.playGame();
+	}
+	
+	private MiniGame getNextGame() {
+		if (this.miniGame == null) {
+			return new Lvl1();
+		} else {
+			return this.miniGame.getNextLevel();
+		}
+		
 	}
 }
