@@ -3,8 +3,10 @@ package gamers.associate.malwg;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import gamers.associate.malwg.screens.BeforePlay;
 
@@ -17,6 +19,10 @@ public abstract class MiniGame implements Screen, InputProcessor {
 	protected SpriteBatch batch;
 	protected BitmapFont font;
 	
+	protected Stage stage;
+	
+	private OrthographicCamera cam;
+	
 	public MiniGame() {
 		this.batch = new SpriteBatch();
 		this.font = Assets.getNewFont();
@@ -25,9 +31,21 @@ public abstract class MiniGame implements Screen, InputProcessor {
 		this.gameType = this.getGameType();
 		this.state = GameState.INTRO;
 		this.beforeScreen = new BeforePlay(this, this.getBackPath(), this.title);
+		
+		this.cam = new OrthographicCamera(Malwg.WIDTH, Malwg.HEIGHT);
+		this.cam.position.set(0, 0, 0);
+		this.cam.zoom = this.getZoom();
+		
+		this.stage = new Stage(Malwg.WIDTH, Malwg.HEIGHT, false);
+		this.stage.setCamera(this.cam);
+	}
+
+	private float getZoom() {
+		return 1;
 	}
 
 	public void play() {
+		this.initGame();
 		Gdx.input.setInputProcessor(this);
 		this.state = GameState.INTRO;
 		this.setScreen();
@@ -79,8 +97,16 @@ public abstract class MiniGame implements Screen, InputProcessor {
 			this.restart();
 			return;
 		}
+		
+		this.stage.act(delta);
+		this.batch.begin();
+		this.drawBack(this.batch);
+		this.batch.end();
+		this.stage.draw();
 	}
 	
+	protected abstract void drawBack(SpriteBatch batch);
+
 	@Override
 	public boolean keyUp(int keycode) {		
 		if (this.state == GameState.INTRO) {
@@ -95,8 +121,7 @@ public abstract class MiniGame implements Screen, InputProcessor {
 		return false;
 	}
 	
-	private void restart() {
-		this.initGame();
+	private void restart() {		
 		this.play();
 	}
 	

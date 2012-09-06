@@ -1,5 +1,7 @@
 package gamers.associate.malwg.game;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import gamers.associate.malwg.GameType;
 import gamers.associate.malwg.MiniGame;
 
@@ -36,6 +38,12 @@ public class Lvl2 extends MiniGame {
 
 	@Override
 	protected void initGame() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void drawBack(SpriteBatch batch) {
 		// TODO Auto-generated method stub
 		
 	}

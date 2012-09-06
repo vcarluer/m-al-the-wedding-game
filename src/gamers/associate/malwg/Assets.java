@@ -31,8 +31,12 @@ public class Assets {
 		addTexture(DATA_ANNELAURE);
 	}
 	
-	private static void addTexture(String path) {
+	public static void addTexture(String path) {
 		textures.put(path, createTexture(path));
+	}
+	
+	public static void addSound(String path) {
+		sounds.put(path, createSound(path));
 	}
 	
 	private static Sound createSound(String path) {
