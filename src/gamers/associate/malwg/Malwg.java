@@ -1,6 +1,7 @@
 package gamers.associate.malwg;
 
 import gamers.associate.malwg.game.Lvl1;
+import gamers.associate.malwg.game.Lvl2;
 import gamers.associate.malwg.screens.BeforePlay;
 import gamers.associate.malwg.screens.Title;
 
@@ -68,5 +69,14 @@ public class Malwg extends Game {
 			return this.miniGame.getNextLevel();
 		}
 		
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		if (this.miniGame != null) {
+			
+		}
+		
+		super.resize(width, height);
 	}
 }

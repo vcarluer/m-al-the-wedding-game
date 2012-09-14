@@ -29,7 +29,7 @@ public class Title implements Screen, InputProcessor {
 	public void render(float delta) {
 		this.batch.begin();
 		this.sprite.draw(this.batch);
-		this.font.draw(this.batch, insert, Gdx.graphics.getWidth() / 2f - 100, Gdx.graphics.getHeight() / 3f);
+		this.font.draw(this.batch, insert, Malwg.WIDTH / 2f - 100, Malwg.HEIGHT / 3f);
 		this.batch.end();
 	}
 

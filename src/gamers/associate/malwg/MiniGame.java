@@ -3,6 +3,7 @@ package gamers.associate.malwg;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -28,6 +29,12 @@ public abstract class MiniGame implements Screen, InputProcessor {
 	private OrthographicCamera cam;
 	private Sprite bkg;
 	
+	private int startWidth;
+	private int startHeight;
+	
+	protected int direction;
+	protected int directionV;
+	
 	public MiniGame() {
 		this.batch = new SpriteBatch();
 		this.font = Assets.getNewFont();
@@ -51,11 +58,14 @@ public abstract class MiniGame implements Screen, InputProcessor {
 		Assets.addTexture(HEART);
 		this.heart = Assets.getTexture(HEART);
 		
+		this.startWidth = Gdx.graphics.getWidth();
+		this.startHeight = Gdx.graphics.getHeight();
+		
 		String text = this.getBackground();
 		if (text != null) {
 			Assets.addTexture(text);
 			this.bkg = new Sprite(Assets.getTexture(text));
-			this.bkg.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			this.bkg.setSize(this.startWidth, this.startHeight);
 		}		
 	}
 
@@ -105,18 +115,16 @@ public abstract class MiniGame implements Screen, InputProcessor {
 		this.setScreen();
 	}
 	
+	protected float totalDelta;
+	
 	@Override
 	public void render(float delta) {
-		if (this.state == GameState.WIN) {
-			Malwg.get().playNextGame();
-			return;
-		}
-		
 		if (this.state == GameState.LOSE) {
 			this.restart();
 			return;
 		}
 		
+		this.totalDelta += delta;
 		this.stage.act(delta);
 		this.batch.begin();
 		this.drawBack(this.batch);
@@ -125,9 +133,16 @@ public abstract class MiniGame implements Screen, InputProcessor {
 		
 		// hud
 		this.batch.begin();
-		this.batch.draw(this.heart, 10, Gdx.graphics.getHeight() - 60, 50, 50, 0, 0, 32, 32, false, false);
-		this.batch.draw(this.heart, 70, Gdx.graphics.getHeight() - 60, 50, 50, 0, 0, 32, 32, false, false);
-		this.batch.draw(this.heart, 130, Gdx.graphics.getHeight() - 60, 50, 50, 0, 0, 32, 32, false, false);
+		this.batch.draw(this.heart, this.getScaledW(10), this.startHeight - this.getScaledW(60), this.getScaledW(50), this.getScaledW(50), 0, 0, 32, 32, false, false);
+		this.batch.draw(this.heart, this.getScaledW(70), this.startHeight - this.getScaledW(60), this.getScaledW(50), this.getScaledW(50), 0, 0, 32, 32, false, false);
+		this.batch.draw(this.heart, this.getScaledW(130), this.startHeight - this.getScaledW(60), this.getScaledW(50), this.getScaledW(50), 0, 0, 32, 32, false, false);
+		
+		
+		if (this.state == GameState.WIN) {
+			this.font.setScale(2);			
+			this.font.draw(batch, "YOU WIN!", this.startWidth / 2f, this.startHeight / 2f);
+		}
+		
 		this.batch.end();
 	}
 	
@@ -144,10 +159,54 @@ public abstract class MiniGame implements Screen, InputProcessor {
 			return true;
 		}
 		
+		if (this.state == GameState.WIN) {
+			Malwg.get().playNextGame();
+			return true;
+		}
+		
+		if ((keycode == Keys.RIGHT && this.direction == 1) || (keycode == Keys.LEFT && this.direction == -1)) {
+			direction = 0;
+			return true;
+		}
+		
+		if ((keycode == Keys.UP && this.directionV == 1) || (keycode == Keys.DOWN && this.directionV == -1)) {
+			directionV = 0;
+			return true;
+		}
+		
+		if (keycode == Keys.SPACE) {
+			this.action();
+			return true;
+		}
+		
 		return false;
 	}
+	protected abstract void action();
+
 	@Override
-	public boolean keyDown(int keycode) {			
+	public boolean keyDown(int keycode) {
+		if (this.state == GameState.RUNNING) {
+			if (keycode == Keys.LEFT) {
+				direction = -1;
+				return true;
+			}
+			
+			if (keycode == Keys.RIGHT) {
+				direction = 1;
+				return true;
+			}
+			
+			if (keycode == Keys.UP) {
+				directionV = 1;
+				return true;
+			}
+			
+			if (keycode == Keys.DOWN) {
+				directionV = -1;
+				return true;				
+			}
+		}
+		
 		return false;
 	}
 	
@@ -160,6 +219,11 @@ public abstract class MiniGame implements Screen, InputProcessor {
 			Assets.getSound(getMusic()).stop();
 			Assets.getSound(getMusic()).play();
 		}
+		
+		this.direction = 0;
+		this.directionV = 0;
+		
+		this.totalDelta = 0;
 		this.initLvl();
 	}
 	
@@ -254,4 +318,36 @@ public abstract class MiniGame implements Screen, InputProcessor {
 	protected abstract String getMusic();
 	
 	protected abstract String getBackground();
+	
+	protected float getScaledW(float width) {
+		return width * (this.startWidth / Malwg.WIDTH);
+	}
+	
+	protected float getScaledH(float height) {
+		return height * (this.startHeight / Malwg.HEIGHT);
+	}
+	
+	protected void move(GameItemSprite item, float delta) {
+		float x = item.x;
+		x += this.direction * item.speed * delta;
+		if ((x + (item.width / 2f) < Malwg.WIDTH / 2f) && ((x - item.width / 2f) > - Malwg.WIDTH / 2f)) {
+			item.x = x;
+		}
+		
+		
+		float y = item.y;
+		y += this.directionV * item.speedV * delta;
+		
+		if ((y + (item.height / 2f) < Malwg.HEIGHT / 2f) && ((y - item.height / 2f) > - Malwg.HEIGHT / 2f)) {
+			item.y = y;
+		}
+	}
+	
+	protected float get0x(float width) {
+		return - Malwg.WIDTH / 2f + width / 2f;
+	}
+	
+	protected float get0y(float height) {
+		return - Malwg.HEIGHT / 2f + height / 2f;
+	}
 }

@@ -6,6 +6,7 @@ public class GameItemSprite extends GameItem {
 	private float textureWidth;
 	private float textureHeight;
 	public int speed;
+	public int speedV;
 	
 	public GameItemSprite(
 			String spritePath, 

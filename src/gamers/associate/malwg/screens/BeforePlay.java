@@ -20,6 +20,9 @@ public class BeforePlay implements Screen {
 	private BitmapFont font;
 	private MiniGame game;
 	
+	private int startWidth;
+	private int startHeight;
+	
 	public BeforePlay(MiniGame game, String backPath, String title) {
 		this.backPath = backPath;
 		this.title = title;
@@ -27,14 +30,18 @@ public class BeforePlay implements Screen {
 		
 		this.batch = new SpriteBatch();
 		this.backSprite = Assets.getBackSprite(this.backPath);
+		this.backSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		this.font = Assets.getNewFont();
+		
+		this.startWidth = Gdx.graphics.getWidth();
+		this.startHeight = Gdx.graphics.getHeight();
 	}
 	
 	@Override
 	public void render(float delta) {
 		this.batch.begin();
 		this.backSprite.draw(this.batch);
-		this.font.draw(this.batch, this.title, Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 3f);
+		this.font.draw(this.batch, this.title, this.startWidth / 2f, this.startHeight / 2f);
 		this.batch.end();
 	}
 
