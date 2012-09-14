@@ -35,6 +35,8 @@ public abstract class MiniGame implements Screen, InputProcessor {
 	protected int direction;
 	protected int directionV;
 	
+	protected boolean disableMoveKeys;
+	
 	public MiniGame() {
 		this.batch = new SpriteBatch();
 		this.font = Assets.getNewFont();
@@ -164,15 +166,18 @@ public abstract class MiniGame implements Screen, InputProcessor {
 			return true;
 		}
 		
-		if ((keycode == Keys.RIGHT && this.direction == 1) || (keycode == Keys.LEFT && this.direction == -1)) {
-			direction = 0;
-			return true;
+		if (!this.disableMoveKeys) {
+			if ((keycode == Keys.RIGHT && this.direction == 1) || (keycode == Keys.LEFT && this.direction == -1)) {
+				direction = 0;
+				return true;
+			}
+			
+			if ((keycode == Keys.UP && this.directionV == 1) || (keycode == Keys.DOWN && this.directionV == -1)) {
+				directionV = 0;
+				return true;
+			}
 		}
 		
-		if ((keycode == Keys.UP && this.directionV == 1) || (keycode == Keys.DOWN && this.directionV == -1)) {
-			directionV = 0;
-			return true;
-		}
 		
 		if (keycode == Keys.SPACE) {
 			this.action();
@@ -185,7 +190,7 @@ public abstract class MiniGame implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		if (this.state == GameState.RUNNING) {
+		if (this.state == GameState.RUNNING && !this.disableMoveKeys) {
 			if (keycode == Keys.LEFT) {
 				direction = -1;
 				return true;

@@ -35,8 +35,7 @@ public class Lvl3 extends MiniGame {
 
 	@Override
 	public MiniGame getNextLevel() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Lvl4();
 	}
 
 	@Override
