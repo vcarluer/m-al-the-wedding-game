@@ -1,8 +1,6 @@
 package gamers.associate.malwg;
 
-import gamers.associate.malwg.game.Lvl1;
-import gamers.associate.malwg.game.Lvl2;
-import gamers.associate.malwg.screens.BeforePlay;
+import gamers.associate.malwg.game.Lvl3;
 import gamers.associate.malwg.screens.Title;
 
 import com.badlogic.gdx.Game;
@@ -64,7 +62,7 @@ public class Malwg extends Game {
 	
 	private MiniGame getNextGame() {
 		if (this.miniGame == null) {
-			return new Lvl1();
+			return new Lvl3();
 		} else {
 			return this.miniGame.getNextLevel();
 		}
