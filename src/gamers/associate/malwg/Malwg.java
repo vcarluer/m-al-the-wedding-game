@@ -54,6 +54,9 @@ public class Malwg extends Game {
 	}
 	
 	public void playNextGame() {
+		if (this.miniGame != null) {
+			this.miniGame.endGame();
+		}
 		this.miniGame = this.getNextGame();
 		this.playGame();
 	}

@@ -4,13 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import gamers.associate.malwg.screens.BeforePlay;
 
 public abstract class MiniGame implements Screen, InputProcessor {
+	private static String HEART = "data/heart.png";
+	private Texture heart;
 	protected String title; 
 	protected GameType gameType;
 	protected BeforePlay beforeScreen;
@@ -22,6 +26,7 @@ public abstract class MiniGame implements Screen, InputProcessor {
 	protected Stage stage;
 	
 	private OrthographicCamera cam;
+	private Sprite bkg;
 	
 	public MiniGame() {
 		this.batch = new SpriteBatch();
@@ -38,6 +43,20 @@ public abstract class MiniGame implements Screen, InputProcessor {
 		
 		this.stage = new Stage(Malwg.WIDTH, Malwg.HEIGHT, false);
 		this.stage.setCamera(this.cam);
+		
+		if (getMusic() != null) {
+			Assets.addSound(getMusic());
+		}		
+		
+		Assets.addTexture(HEART);
+		this.heart = Assets.getTexture(HEART);
+		
+		String text = this.getBackground();
+		if (text != null) {
+			Assets.addTexture(text);
+			this.bkg = new Sprite(Assets.getTexture(text));
+			this.bkg.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		}		
 	}
 
 	private float getZoom() {
@@ -103,9 +122,20 @@ public abstract class MiniGame implements Screen, InputProcessor {
 		this.drawBack(this.batch);
 		this.batch.end();
 		this.stage.draw();
+		
+		// hud
+		this.batch.begin();
+		this.batch.draw(this.heart, 10, Gdx.graphics.getHeight() - 60, 50, 50, 0, 0, 32, 32, false, false);
+		this.batch.draw(this.heart, 70, Gdx.graphics.getHeight() - 60, 50, 50, 0, 0, 32, 32, false, false);
+		this.batch.draw(this.heart, 130, Gdx.graphics.getHeight() - 60, 50, 50, 0, 0, 32, 32, false, false);
+		this.batch.end();
 	}
 	
-	protected abstract void drawBack(SpriteBatch batch);
+	protected void drawBack(SpriteBatch batch) {
+		if (this.bkg != null) {
+			this.bkg.draw(batch);
+		}		
+	}
 
 	@Override
 	public boolean keyUp(int keycode) {		
@@ -125,7 +155,15 @@ public abstract class MiniGame implements Screen, InputProcessor {
 		this.play();
 	}
 	
-	protected abstract void initGame();
+	protected void initGame() {
+		if (getMusic() != null) {
+			Assets.getSound(getMusic()).stop();
+			Assets.getSound(getMusic()).play();
+		}
+		this.initLvl();
+	}
+	
+	protected abstract void initLvl();
 
 	@Override
 	public boolean keyTyped(char character) {
@@ -206,4 +244,14 @@ public abstract class MiniGame implements Screen, InputProcessor {
 	protected void lose() {
 		this.state = GameState.LOSE;
 	}
+
+	public void endGame() {
+		if (getMusic() != null) {
+			Assets.getSound(getMusic()).stop();
+		}
+	}
+	
+	protected abstract String getMusic();
+	
+	protected abstract String getBackground();
 }

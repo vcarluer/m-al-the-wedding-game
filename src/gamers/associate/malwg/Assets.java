@@ -32,7 +32,9 @@ public class Assets {
 	}
 	
 	public static void addTexture(String path) {
-		textures.put(path, createTexture(path));
+		if (!textures.containsKey(path)) {
+			textures.put(path, createTexture(path));
+		}		
 	}
 	
 	public static void addSound(String path) {

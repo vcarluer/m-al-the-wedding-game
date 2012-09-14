@@ -1,44 +1,37 @@
 package gamers.associate.malwg.game;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import gamers.associate.malwg.Assets;
 import gamers.associate.malwg.GameItemSprite;
 import gamers.associate.malwg.GameState;
 import gamers.associate.malwg.GameType;
 import gamers.associate.malwg.MiniGame;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 public class Lvl1 extends MiniGame {
-	
+	private static int GOAL = 1;
 	private static final int crepiere_offset = 20;
-	private static final String DATA_LVL1_BRETAGNE_WAV = "data/lvl1/bretagne.wav";
+	private static final String DATA_LVL1_BRETAGNE_OGG = "data/lvl1/bretagne.ogg";
 	private static final String DATA_LVL1_FLAGGE_BRETAGNE_PNG = "data/lvl1/flagge-bretagne.png";
 	private static final String DATA_LVL1_CREPIERE_PNG = "data/lvl1/crepiere.png";
 	private static final String DATA_LVL1_CREPE_PNG = "data/lvl1/crepe.png";
 	
 	private GameItemSprite crepiere;
 	private List<GameItemSprite> crepes;
-	private Sprite flag;
 	
 	public Lvl1() {
 		Assets.addTexture(DATA_LVL1_CREPE_PNG);
 		Assets.addTexture(DATA_LVL1_CREPIERE_PNG);
-		Assets.addTexture(DATA_LVL1_FLAGGE_BRETAGNE_PNG);
-		Assets.addSound(DATA_LVL1_BRETAGNE_WAV);
+		Assets.addTexture(DATA_LVL1_FLAGGE_BRETAGNE_PNG);		
 		
 		this.crepiere = new GameItemSprite(DATA_LVL1_CREPIERE_PNG, 0, - Gdx.graphics.getHeight() / 2f + 150, 128, 30, 64, 15, 64, 64);
 		this.crepiere.speed = 500;
 		this.stage.addActor(this.crepiere);
-		this.flag = new Sprite(Assets.getTexture(DATA_LVL1_FLAGGE_BRETAGNE_PNG));
-		
-		this.flag.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		this.crepes = new ArrayList<GameItemSprite>();
 	}
@@ -101,7 +94,7 @@ public class Lvl1 extends MiniGame {
 			if ((Math.abs(this.crepiere.x + crepiere_offset - crepe.x) < 50) && (Math.abs(this.crepiere.y - crepe.y) < 10)) {
 				this.crepeWin++;
 				toDeleteWin.add(crepe);
-				if (this.crepeWin > 7) {
+				if (this.crepeWin >= GOAL) {
 					this.win();
 					break;
 				}
@@ -111,7 +104,6 @@ public class Lvl1 extends MiniGame {
 				this.crepeLoose++;
 				toDelete.add(crepe);
 				if (crepeLoose > 3) {
-					Assets.getSound(DATA_LVL1_BRETAGNE_WAV).stop();
 					this.lose();
 					break;
 				}
@@ -169,9 +161,8 @@ public class Lvl1 extends MiniGame {
 	private int direction;
 
 	@Override
-	protected void initGame() {
+	protected void initLvl() {
 		this.totalDelta = 0;
-		Assets.getSound(DATA_LVL1_BRETAGNE_WAV).play();
 		this.crepiere.setPosition(0, - Gdx.graphics.getHeight() / 2f + 150);
 		for(GameItemSprite crepe : this.crepes) {
 			this.stage.removeActor(crepe);
@@ -189,7 +180,12 @@ public class Lvl1 extends MiniGame {
 	}
 
 	@Override
-	protected void drawBack(SpriteBatch batch) {
-		this.flag.draw(batch);
+	protected String getMusic() {
+		return DATA_LVL1_BRETAGNE_OGG;
+	}
+
+	@Override
+	protected String getBackground() {
+		return DATA_LVL1_FLAGGE_BRETAGNE_PNG;
 	}
 }
