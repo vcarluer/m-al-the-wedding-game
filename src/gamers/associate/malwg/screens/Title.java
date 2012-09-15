@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Title implements Screen, InputProcessor {
+	private static final String INTRO = "data/loveboat.ogg";
 	private SpriteBatch batch;
 	private Sprite sprite;
 	private BitmapFont font;
@@ -22,14 +23,16 @@ public class Title implements Screen, InputProcessor {
 	public Title() {
 		this.batch = new SpriteBatch();
 		this.sprite = Assets.getTitleSprite();
-		this.sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.sprite.setSize(Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
 		this.font = Assets.getNewFont();
+		Assets.addSound(INTRO);
+		Assets.getSound(INTRO).play();
 	}
 	
 	public void render(float delta) {
 		this.batch.begin();
 		this.sprite.draw(this.batch);
-		this.font.draw(this.batch, insert, Malwg.WIDTH / 2f - 100, Malwg.HEIGHT / 3f);
+		this.font.draw(this.batch, insert, Malwg.WIDTH / 2f - 100, Malwg.HEIGHT / 5f);
 		this.batch.end();
 	}
 
@@ -70,6 +73,8 @@ public class Title implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
+		if (keycode == 0) return false;
+		Assets.getSound(INTRO).stop();
 		Malwg.get().playNextGame();
 		return true;
 	}

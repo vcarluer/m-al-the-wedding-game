@@ -161,12 +161,13 @@ public abstract class MiniGame implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {		
-		if (this.state == GameState.INTRO) {
+		if (keycode == 0) return false;
+		if (this.state == GameState.INTRO && keycode == Keys.SPACE) {
 			this.startGame();
 			return true;
 		}
 		
-		if (this.state == GameState.WIN) {
+		if (this.state == GameState.WIN && keycode == Keys.SPACE) {
 			if (!this.lastLevel) {
 				Malwg.get().playNextGame();
 				return true;
@@ -198,6 +199,7 @@ public abstract class MiniGame implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
+		if (keycode == 0) return false;
 		if (this.state == GameState.RUNNING && !this.disableMoveKeys) {
 			if (keycode == Keys.LEFT) {
 				direction = -1;

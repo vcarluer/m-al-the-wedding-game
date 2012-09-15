@@ -75,22 +75,22 @@ public class Assets {
 	}
 	
 	public static Sprite getTitleSprite() {
-		return new Sprite(new TextureRegion(getTexture(DATA_TITLE)), 0, 0, 800, 600);
+		return new Sprite(new TextureRegion(getTexture(DATA_TITLE)), 0, 0, 512, 512);
 	}
 	
 	public static Sprite getBackMathieuSprite() {
-		return new Sprite(new TextureRegion(getTexture(DATA_MATHIEU)), 0, 0, 800, 600);
+		return new Sprite(new TextureRegion(getTexture(DATA_MATHIEU)), 0, 0, 512, 512);
 	}
 	
 	public static Sprite getBackAnneLaureSprite() {
-		return new Sprite(new TextureRegion(getTexture(DATA_ANNELAURE)), 0, 0, 800, 600);
+		return new Sprite(new TextureRegion(getTexture(DATA_ANNELAURE)), 0, 0, 512, 512);
 	}
 	
 	public static Sprite getBackBothSprite() {
-		return new Sprite(new TextureRegion(getTexture(DATA_BOTH)), 0, 0, 800, 600);
+		return new Sprite(new TextureRegion(getTexture(DATA_BOTH)), 0, 0, 512, 512);
 	}
 	
 	public static Sprite getBackSprite(String path) {
-		return new Sprite(new TextureRegion(getTexture(path)), 0, 0, 800, 600);
+		return new Sprite(new TextureRegion(getTexture(path)), 0, 0, 512, 512);
 	}
 }
