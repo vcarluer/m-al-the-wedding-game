@@ -1,5 +1,10 @@
 package gamers.associate.malwg.game;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.OnActionCompleted;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
+import com.badlogic.gdx.scenes.scene2d.actions.Sequence;
+
 import gamers.associate.malwg.Assets;
 import gamers.associate.malwg.GameItemSprite;
 import gamers.associate.malwg.GameState;
@@ -40,9 +45,24 @@ public class Lvl3 extends MiniGame {
 
 	@Override
 	protected void action() {
+		MoveBy mb = MoveBy.$(0, 20, 0.3f);
+		MoveBy mbi = MoveBy.$(0, -20, 0.3f);
+		this.direction = 0;
 		if ((this.hand.x > - Malwg.WIDTH / 3f + size) && (this.hand.x < Malwg.WIDTH / 3f - size)) {
-			this.win();
+			mb.setCompletionListener(new OnActionCompleted() {
+				
+				@Override
+				public void completed(Action action) {
+					win();
+				}
+			});
+			this.hand.action(mb);
+		} else {
+			Sequence seq = Sequence.$(mb, mbi);
+			this.hand.action(seq);
 		}
+		
+		
 	}
 
 	@Override
