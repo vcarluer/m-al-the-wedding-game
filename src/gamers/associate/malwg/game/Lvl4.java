@@ -79,7 +79,7 @@ public class Lvl4 extends MiniGame {
 
 	@Override
 	public MiniGame getNextLevel() {
-		return new Lvl5();
+		return new Lvl51();
 	}
 
 	private float lastAction;
