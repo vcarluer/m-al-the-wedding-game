@@ -17,7 +17,7 @@ import gamers.associate.malwg.MiniGame;
 public class Lvl5 extends MiniGame {
 	private static final String MAKI_PNG = "data/lvl5/maki.png";
 	private static final String BAGUETTES = "data/lvl5/baguettes_128_91.png";
-	private static final int makiCount = 7;
+	private static final int makiCount = 10;
 	private static final float offsety_baguettes = -25;
 	private List<GameItemSprite> makis;
 	private GameItemSprite baguettes;
@@ -89,8 +89,7 @@ public class Lvl5 extends MiniGame {
 
 	@Override
 	public MiniGame getNextLevel() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Lvl6();
 	}
 
 	@Override

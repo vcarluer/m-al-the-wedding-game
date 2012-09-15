@@ -15,7 +15,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Lvl1 extends MiniGame {
-	private static int GOAL = 5;
+	private static int GOAL = 10;
 	private static final int crepiere_offset = 20;
 	private static final String DATA_LVL1_BRETAGNE_OGG = "data/lvl1/bretagne.ogg";
 	private static final String DATA_LVL1_FLAGGE_BRETAGNE_PNG = "data/lvl1/flagge-bretagne.png";

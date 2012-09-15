@@ -118,6 +118,7 @@ public abstract class MiniGame implements Screen, InputProcessor {
 	}
 	
 	protected float totalDelta;
+	protected boolean lastLevel;
 	
 	@Override
 	public void render(float delta) {
@@ -141,8 +142,12 @@ public abstract class MiniGame implements Screen, InputProcessor {
 		
 		
 		if (this.state == GameState.WIN) {
-			this.font.setScale(2);			
-			this.font.draw(batch, "YOU WIN!", this.startWidth / 2f, this.startHeight / 2f);
+			this.font.setScale(2);		
+			String txt = "YOU WIN!";
+			if (this.lastLevel) {
+				txt = "CONGRATULATION!";
+			}
+			this.font.draw(batch, txt, this.startWidth / 2f - 200, this.startHeight / 2f);
 		}
 		
 		this.batch.end();
@@ -162,8 +167,11 @@ public abstract class MiniGame implements Screen, InputProcessor {
 		}
 		
 		if (this.state == GameState.WIN) {
-			Malwg.get().playNextGame();
-			return true;
+			if (!this.lastLevel) {
+				Malwg.get().playNextGame();
+				return true;
+			}
+			
 		}
 		
 		if (!this.disableMoveKeys) {
