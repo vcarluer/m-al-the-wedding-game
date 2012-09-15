@@ -79,8 +79,7 @@ public class Lvl4 extends MiniGame {
 
 	@Override
 	public MiniGame getNextLevel() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Lvl5();
 	}
 
 	private float lastAction;

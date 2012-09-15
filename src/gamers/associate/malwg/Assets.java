@@ -29,6 +29,7 @@ public class Assets {
 		addTexture(DATA_TITLE);
 		addTexture(DATA_MATHIEU);
 		addTexture(DATA_ANNELAURE);
+		addTexture(DATA_BOTH);
 	}
 	
 	public static void addTexture(String path) {
